@@ -1,7 +1,7 @@
 const { terminal } = require("terminal-kit");
 
-function getJournalEntry() {
-  const header = `Journal entry ${today()}\n`;
+function getJournalEntry(date) {
+  const header = `Journal entry ${niceDate(date)}\n`;
   return new Promise(resolve => {
     terminal.clear();
     terminal.noFormat(header);
@@ -68,7 +68,7 @@ function getJournalEntry() {
   });
 }
 
-function today() {
+function niceDate(date) {
   var options = {
     weekday: "long",
     year: "numeric",
@@ -78,7 +78,7 @@ function today() {
     minute: "2-digit",
     second: "2-digit"
   };
-  return new Date().toLocaleString("default", options);
+  return new Date(date).toLocaleString("default", options);
 }
 
 module.exports = {
