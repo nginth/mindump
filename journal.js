@@ -1,9 +1,10 @@
 const { terminal } = require("terminal-kit");
 
 function getJournalEntry() {
+  const header = `Journal entry ${today()}\n`;
   return new Promise(resolve => {
     terminal.clear();
-    terminal.noFormat(`Journal entry ${Date.now()}`);
+    terminal.noFormat(header);
     terminal.grabInput();
 
     let editable = 0;
@@ -12,17 +13,15 @@ function getJournalEntry() {
     terminal.on("key", (name, _, data) => {
       switch (name) {
         case "CTRL_C":
-          terminal.grabInput(false);
-          resolve(fullEntry.join(""));
-          return;
+          return exit();
         case "CTRL_S":
-          save();
+          return save();
           break;
         case " ":
           handleSpace(name);
           break;
-        case "\n":
-          handleNewline(name);
+        case "ENTER":
+          handleNewline("\n");
           break;
         case "BACKSPACE":
           if (editable > 0) {
@@ -38,6 +37,7 @@ function getJournalEntry() {
 
       terminal.clear();
 
+      terminal.noFormat(header);
       terminal.noFormat(fullEntry.join(""));
     });
 
@@ -48,7 +48,7 @@ function getJournalEntry() {
       }
     }
 
-    function handleNewline() {
+    function handleNewline(name) {
       if (fullEntry[fullEntry.length - 1] != "\n") {
         editable = 0;
         fullEntry.push(name);
@@ -56,10 +56,29 @@ function getJournalEntry() {
     }
 
     function save() {
-      console.log("Saving not implemented yet :(");
-      return;
+      terminal.grabInput(false);
+      terminal.noFormat("Saving not implemented yet :(\n");
+      resolve(fullEntry.join(""));
+    }
+
+    function exit() {
+      terminal.grabInput(false);
+      resolve(fullEntry.join(""));
     }
   });
+}
+
+function today() {
+  var options = {
+    weekday: "long",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit"
+  };
+  return new Date().toLocaleString("default", options);
 }
 
 module.exports = {
