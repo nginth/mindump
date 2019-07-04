@@ -1,6 +1,6 @@
 const { terminal } = require("terminal-kit");
 
-function setupKeyEvents() {
+function setupGlobalKeyEvents() {
   terminal.on("key", name => {
     if (name === "CTRL_C") {
       terminal.clear();
@@ -10,5 +10,5 @@ function setupKeyEvents() {
 }
 
 module.exports = {
-  setupKeyEvents
+  setupGlobalKeyEvents
 };

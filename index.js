@@ -1,6 +1,6 @@
-const { mainMenu } = require("./src/mainMenu");
+const { mainMenu } = require("./src/menus/mainMenu");
 const { setupDb } = require("./src/db");
-const { setupKeyEvents } = require("./src/events");
+const { setupGlobalKeyEvents } = require("./src/events");
 
 mindump();
 
@@ -8,7 +8,7 @@ async function mindump() {
   let db;
   try {
     db = await setupDb();
-    setupKeyEvents();
+    setupGlobalKeyEvents();
     await mainMenu(db);
   } catch (error) {
     console.error(`exiting with error: ${error}`);

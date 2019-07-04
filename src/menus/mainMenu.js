@@ -1,8 +1,8 @@
 const { terminal } = require("terminal-kit");
 
 const { singleColumnMenu } = require("./menu");
-const { newAction, viewAction, exitAction } = require("./actions");
-const {stats} = require("./stats")
+const { newAction, viewAction, exitAction } = require("../actions");
+const { stats } = require("../stats")
 
 async function mainMenu(db) {
   const actions = {

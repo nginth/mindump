@@ -3,11 +3,10 @@ const { terminal } = require("terminal-kit");
 const { prettyDate } = require("./date");
 
 function getJournalEntry(date) {
-  const header = `Journal entry ${prettyDate(date)}\n`;
   terminal.clear();
   terminal.hideCursor();
   return new Promise(resolve => {
-    let editable = 0;
+    let pastEditableChars = 0;
     let fullEntry = [];
 
     terminalPrompt();
@@ -28,15 +27,15 @@ function getJournalEntry(date) {
             handleNewline("\n");
             break;
           case "BACKSPACE":
-            if (editable > 0) {
+            if (pastEditableChars > 0) {
               fullEntry.pop();
-              editable -= 1;
+              pastEditableChars -= 1;
             }
             break;
           default:
             if (!data.isCharacter) return;
             fullEntry.push(name);
-            editable += 1;
+            pastEditableChars += 1;
         }
 
         terminalPrompt();
@@ -44,15 +43,15 @@ function getJournalEntry(date) {
     });
 
     function handleSpace(name) {
-      if (editable > 0) {
-        editable = 0;
+      if (pastEditableChars > 0) {
+        pastEditableChars = 0;
         fullEntry.push(name);
       }
     }
 
     function handleNewline(name) {
       if (fullEntry[fullEntry.length - 1] != "\n") {
-        editable = 0;
+        pastEditableChars = 0;
         fullEntry.push(name);
       }
     }
@@ -64,7 +63,7 @@ function getJournalEntry(date) {
     }
 
     function terminalPrompt() {
-      terminal.noFormat(header);
+      terminal.noFormat(`Journal entry ${prettyDate(date)}\n\n`);
       terminal.noFormat(fullEntry.join(""));
       terminal.noFormat("\n\n Save: CTRL-S \n Exit: CTRL-C");
     }
