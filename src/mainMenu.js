@@ -2,6 +2,7 @@ const { terminal } = require("terminal-kit");
 
 const { singleColumnMenu } = require("./menu");
 const { newAction, viewAction, exitAction } = require("./actions");
+const {stats} = require("./stats")
 
 async function mainMenu(db) {
   const actions = {
@@ -9,13 +10,14 @@ async function mainMenu(db) {
     View: viewAction(db),
     Exit: exitAction(db)
   };
-
+  terminal.clear();
   while (true) {
+    terminal.noFormat(await stats(db))
     const { selectedText } = await singleColumnMenu(actions);
 
     const result = await actions[selectedText]();
     terminal.clear();
-    if (result) terminal.noFormat(result);
+    if (result) terminal.noFormat(result);    
   }
 }
 
