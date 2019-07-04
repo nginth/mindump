@@ -25,8 +25,7 @@ async function getLastEntry(db) {
             }            
             resolve(prettyDate(result.date))
         })
-    })
-    return prettyDate(Date.now());
+    })    
 }
 
 
