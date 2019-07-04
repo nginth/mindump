@@ -1,6 +1,5 @@
-const { showMenu } = require("./src/menu");
+const { mainMenu } = require("./src/mainMenu");
 const { setupDb } = require("./src/db");
-const { newAction, viewAction, exitAction } = require("./src/actions");
 
 mindump();
 
@@ -9,14 +8,7 @@ async function mindump() {
   try {
     db = await setupDb();
 
-    const items = ["New", "View", "Exit"];
-    const actions = [newAction(db), viewAction(db), exitAction()];
-
-    while (true) {
-      const index = await showMenu(items);
-
-      await actions[index]();
-    }
+    await mainMenu(db);
   } catch (error) {
     console.error(`exiting with error: ${error}`);
     process.exit(1);
