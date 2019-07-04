@@ -8,9 +8,13 @@ function singleColumnMenu(actions) {
     );
   });
 }
-function singleRowMenu(actions) {
+function singleRowMenu(actions, options = {}) {
   return new Promise((resolve, reject) => {
-    terminal.singleRowMenu(Object.keys(actions), menuCallback(resolve, reject));
+    terminal.singleRowMenu(
+      Object.keys(actions),
+      options,
+      menuCallback(resolve, reject)
+    );
   });
 }
 
@@ -19,7 +23,10 @@ function menuCallback(resolve, reject) {
     if (error) {
       return reject(error);
     }
-    resolve(response.selectedText);
+    resolve({
+      selectedText: response.selectedText,
+      selectedIndex: response.selectedIndex
+    });
   };
 }
 

@@ -1,7 +1,9 @@
 const { terminal } = require("terminal-kit");
 
+const { prettyDate } = require("./date");
+
 function getJournalEntry(date) {
-  const header = `Journal entry ${niceDate(date)}\n`;
+  const header = `Journal entry ${prettyDate(date)}\n`;
   terminal.clear();
   terminal.hideCursor();
   return new Promise(resolve => {
@@ -67,19 +69,6 @@ function getJournalEntry(date) {
       terminal.noFormat("\n\n Save: CTRL-S \n Exit: CTRL-C");
     }
   });
-}
-
-function niceDate(date) {
-  var options = {
-    weekday: "long",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit"
-  };
-  return new Date(date).toLocaleString("default", options);
 }
 
 module.exports = {

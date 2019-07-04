@@ -3,6 +3,7 @@ const { terminal } = require("terminal-kit");
 const { getJournalEntry } = require("./journal");
 const { saveEntry, getEntryByReverseIndex } = require("./db");
 const { singleRowMenu } = require("./menu");
+const { prettyDate } = require("./date");
 
 function newAction(db) {
   const date = Date.now();
@@ -19,6 +20,7 @@ function viewAction(db) {
   return async () => {
     let viewingEntries = true;
     let index = 0;
+    let menuIndex = 0;
     const actions = {
       Prev: () => (index = index > 0 ? index - 1 : 0),
       Next: () => (index = nextRecord ? index + 1 : index),
@@ -30,11 +32,16 @@ function viewAction(db) {
     while (viewingEntries) {
       terminal.clear();
       terminal.noFormat(
-        `Entry: ${entryRecord.date}\n${entryRecord.text}\nPage: ${index}`
+        `Entry: ${prettyDate(entryRecord.date)}\n${
+          entryRecord.text
+        }\n\nPage: ${index}`
       );
 
-      const response = await singleRowMenu(actions);
-      actions[response]();
+      const { selectedText, selectedIndex } = await singleRowMenu(actions, {
+        selectedIndex: menuIndex
+      });
+      actions[selectedText]();
+      menuIndex = selectedIndex;
 
       nextRecord = await getEntryByReverseIndex(db, index);
       if (nextRecord) {

@@ -11,9 +11,9 @@ async function mainMenu(db) {
   };
 
   while (true) {
-    const actionName = await singleColumnMenu(actions);
+    const { selectedText } = await singleColumnMenu(actions);
 
-    const result = await actions[actionName]();
+    const result = await actions[selectedText]();
     terminal.clear();
     if (result) terminal.noFormat(result);
   }
