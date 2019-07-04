@@ -12,6 +12,7 @@ async function mindump() {
     await mainMenu(db);
   } catch (error) {
     console.error(`exiting with error: ${error}`);
+    if (db) db.close();
     process.exit(1);
   } finally {
     if (db) db.close();
