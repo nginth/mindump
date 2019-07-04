@@ -10,7 +10,7 @@ function newAction(db) {
     const journalEntry = await getJournalEntry(date);
     if (journalEntry) {
       await saveEntry(db, journalEntry, date);
-      console.log("entry saved");
+      return "Entry saved!";
     }
   };
 }

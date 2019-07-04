@@ -11,10 +11,11 @@ async function mainMenu(db) {
   };
 
   while (true) {
-    terminal.clear();
     const actionName = await singleColumnMenu(actions);
 
-    await actions[actionName]();
+    const result = await actions[actionName]();
+    terminal.clear();
+    if (result) terminal.noFormat(result);
   }
 }
 
